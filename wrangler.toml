@@ -1,0 +1,14 @@
+name = "hoanganhairlines"
+main = "src/index.js"
+compatibility_date = "2026-11-18"
+
+[assets]
+directory = "./public"
+binding = "ASSETS"
+run_worker_first = ["/api/*"]
+
+[observability]
+enabled = true
+
+# Provider credentials are added as encrypted Worker secrets only after
+# the user has obtained authorized API access. Never commit API keys here.
