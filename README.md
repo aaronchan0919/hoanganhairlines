@@ -4,7 +4,6 @@ Flight-search web application built for Cloudflare Workers + static assets.
 
 ## Current release
 
-This first foundation release includes:
 - Responsive Vietnamese flight-search interface.
 - One-way, round-trip and multi-city itineraries (up to 6 segments).
 - Adults, children (age 2–11), lap infants and infants with a seat as separate passenger groups.
@@ -14,22 +13,46 @@ This first foundation release includes:
 
 **Important:** No live airfare provider is connected in this release. Search requests are validated but intentionally return zero offers. No sample, estimated or fabricated fares are shown.
 
-## Deploy to Cloudflare Workers
+## Deploy using Cloudflare Git integration (recommended)
 
-1. Install Node.js LTS and Wrangler: `npm install -g wrangler`.
-2. In this repository run `npx wrangler login`.
-3. Deploy: `npx wrangler deploy`.
-4. Cloudflare will provide a `*.workers.dev` address if Workers subdomain is enabled for the account.
+Cloudflare account authorization must be completed by the account owner; this repository cannot authorize itself into an external Cloudflare account.
+
+1. Sign in to the Cloudflare dashboard.
+2. Open **Workers & Pages** and choose **Create application → Workers → Connect to Git** (wording may vary).
+3. Authorize GitHub and select `aaronchan0919/hoanganhairlines`, branch `main`.
+4. Set the deployment command to `npx wrangler deploy`; repository root is `/`.
+5. Confirm the Worker name is `hoanganhairlines` and enable the free `workers.dev` subdomain if prompted.
+6. Deploy. Subsequent pushes to `main` can deploy automatically.
 
 No paid custom domain is required. Check the current Cloudflare plan limits before enabling optional paid features.
 
-## Live supplier integration
+### Alternative: GitHub Actions
 
-The provider registry is intentionally separate from the search endpoint. To show real fares, implement and authorize a provider adapter and store credentials as encrypted Worker secrets, never in source control.
+The repository includes `.github/workflows/deploy-cloudflare.yml`. To use it, add these GitHub Actions repository secrets under **Settings → Secrets and variables → Actions**:
+- `CLOUDFLARE_API_TOKEN`: token with permission to deploy Workers for the correct account.
+- `CLOUDFLARE_ACCOUNT_ID`: the Cloudflare account ID.
 
-Potential providers listed in the UI are not connected merely because they appear there. Access may require commercial approval, partner credentials, or an eligible API plan. Website scraping is not used.
+Then run the workflow from the Actions tab or push to `main`. Never put tokens in source code, issues, or chat messages.
 
-Before a fare can be offered to a customer, the integration must return supplier identity, offer ID, itinerary legs, passenger pricing, currency, baggage/fare rules, source timestamp, ticketing capability and a successful reprice/availability confirmation.
+## Real global airfare data: what is possible
+
+There is no single free public API that exposes every airline and every online travel agency's live inventory, complete prices, and ticketing rights. Global coverage requires one or more licensed distribution agreements, airline NDC connections, low-cost-carrier agreements, or authorized affiliate feeds. OTA websites must not be scraped or reverse-engineered against their terms.
+
+A practical aggregator should combine:
+- A global distribution system / aggregator for broad airline coverage.
+- Direct airline NDC/API connections where commercial access is granted.
+- Low-cost carrier connections and authorized partner feeds.
+- OTA affiliate/search feeds where the provider permits display and click-through.
+
+Travelport publicly describes TripServices Flights as providing access to content from 400+ airlines, NDC and low-cost carriers, with search, pricing, booking and ticketing workflows. This is a commercial provider, not a free unauthenticated public feed. See https://developer.travelport.com/.
+
+Potential future adapters: Travelport, Sabre, Amadeus (subject to current product eligibility), airline NDC endpoints, and authorized OTA affiliate feeds such as eligible partner programs. Their names in this plan do not mean accounts, contracts, API keys, inventory or live fares are connected.
+
+### Required provider behavior
+
+Before a fare can be offered to a customer, an adapter must return supplier identity, offer ID, itinerary legs, passenger pricing, currency, baggage/fare rules, source timestamp, ticketing capability and a successful reprice/availability confirmation. Affiliate click-out offers must be labeled separately from fares that can be booked and ticketed through this system.
+
+Credentials must be stored as encrypted Worker secrets, never committed to GitHub. Do not show inferred or cached values as live prices.
 
 ## API contract
 
@@ -47,8 +70,9 @@ Until a provider is connected, the response has `offers: []` and status `provide
 
 ## Next engineering milestones
 
-1. Add authorized live provider adapter(s) and supplier-specific repricing.
-2. Implement currency conversion with recorded source/rate/timestamp.
-3. Add calendar date-pair search, baggage and layover filters.
-4. Add secure booking workflow, D1 audit records and customer booking management.
-5. Add integration tests and production monitoring.
+1. Complete Cloudflare account authorization and first deployment.
+2. Obtain authorized provider access and implement provider adapter(s) with supplier-specific repricing.
+3. Implement currency conversion with recorded source/rate/timestamp.
+4. Add calendar date-pair search, baggage and layover filters.
+5. Add secure booking workflow, D1 audit records and customer booking management.
+6. Add integration tests and production monitoring.
