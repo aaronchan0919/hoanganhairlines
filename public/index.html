@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#071a33">
+  <meta name="description" content="Hoang Anh Airlines - tìm kiếm và so sánh hành trình bay.">
+  <title>Hoang Anh Airlines | Flight Search</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="/" aria-label="Hoang Anh Airlines trang chủ">
+      <span class="brand-mark">HA<span>✦</span></span>
+      <span class="brand-name">HOANG ANH <b>AIRLINES</b><small>SMART FLIGHT SEARCH</small></span>
+    </a>
+    <nav><a href="#search">Tìm chuyến bay</a><a href="#providers">Nguồn dữ liệu</a><a href="#about">Về chúng tôi</a></nav>
+    <div class="top-actions"><span class="live-dot"></span><span>FLIGHT INTELLIGENCE</span></div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="hero-copy">
+        <div class="eyebrow"><span></span> YOUR JOURNEY, OPTIMIZED</div>
+        <h1>Tìm chuyến bay<br><em>thông minh hơn.</em></h1>
+        <p>So sánh hành trình, tối ưu ngày bay và quản lý nhiều chặng trong một giao diện duy nhất.</p>
+        <div class="hero-points"><span>✦ Nhiều hành trình</span><span>✦ Giá minh bạch</span><span>✦ Tìm kiếm linh hoạt</span></div>
+      </div>
+      <div class="hero-art" aria-hidden="true"><div class="orbit orbit-one"></div><div class="orbit orbit-two"></div><div class="plane">✈</div><div class="route-line"></div><div class="destination-pin">✦</div><div class="art-caption">GO BEYOND<br><b>THE ORDINARY</b></div></div>
+    </section>
+
+    <section class="search-section" id="search">
+      <div class="section-heading"><div><span class="eyebrow dark">FLIGHT SEARCH ENGINE</span><h2>Bạn muốn bay đến đâu?</h2></div><span class="secure-note">⌁ Tìm kiếm minh bạch · Không giá ảo</span></div>
+      <div class="search-card">
+        <div class="trip-tabs" role="tablist" aria-label="Loại hành trình">
+          <button class="trip-tab active" data-trip="roundtrip">Khứ hồi</button>
+          <button class="trip-tab" data-trip="oneway">Một chiều</button>
+          <button class="trip-tab" data-trip="multicity">Nhiều chặng</button>
+        </div>
+        <form id="searchForm">
+          <div id="segments" class="segments"></div>
+          <button type="button" id="addSegment" class="add-segment" hidden>＋ Thêm chặng bay</button>
+          <div class="search-options">
+            <div class="field passenger-field">
+              <label>HÀNH KHÁCH</label>
+              <button type="button" id="passengerToggle" class="select-display"><span id="passengerSummary">1 người lớn</span><span>⌄</span></button>
+              <div class="passenger-popover" id="passengerPopover" hidden>
+                <div class="pax-row"><div><b>Người lớn</b><small>Từ 12 tuổi</small></div><div class="stepper"><button type="button" data-count="adults" data-delta="-1">−</button><output id="adultsCount">1</output><button type="button" data-count="adults" data-delta="1">＋</button></div></div>
+                <div class="pax-row"><div><b>Trẻ em</b><small>Từ 2 đến 11 tuổi</small><div id="childrenAges" class="age-list"></div></div><div class="stepper"><button type="button" data-count="children" data-delta="-1">−</button><output id="childrenCount">0</output><button type="button" data-count="children" data-delta="1">＋</button></div></div>
+                <div class="pax-row"><div><b>Em bé ngồi lòng</b><small>Dưới 2 tuổi · Có người lớn đi kèm</small></div><div class="stepper"><button type="button" data-count="infants" data-delta="-1">−</button><output id="infantsCount">0</output><button type="button" data-count="infants" data-delta="1">＋</button></div></div>
+                <div class="pax-row"><div><b>Em bé có ghế riêng</b><small>Dưới 2 tuổi · Tùy quy định hãng</small></div><div class="stepper"><button type="button" data-count="infantsWithSeat" data-delta="-1">−</button><output id="infantsWithSeatCount">0</output><button type="button" data-count="infantsWithSeat" data-delta="1">＋</button></div></div>
+                <button type="button" class="done-btn" id="passengerDone">Hoàn tất</button>
+              </div>
+            </div>
+            <div class="field"><label>HẠNG GHẾ</label><select id="cabin"><option value="economy">Phổ thông</option><option value="premium_economy">Phổ thông đặc biệt</option><option value="business">Thương gia</option><option value="first">Hạng nhất</option></select></div>
+            <div class="field"><label>TIỀN TỆ HIỂN THỊ</label><select id="currency"><option value="USD">USD · Đô la Mỹ</option><option value="VND">VND · Việt Nam đồng</option></select></div>
+          </div>
+          <div class="advanced-row"><label class="check"><input type="checkbox" id="flexibleDates" checked><span>Ngày bay linh hoạt ±7 ngày</span></label><label class="check"><input type="checkbox" id="nearbyAirports"><span>Sân bay lân cận</span></label><label class="check"><input type="checkbox" id="mixedAirlines" checked><span>Kết hợp nhiều hãng bay</span></label><label class="check"><input type="checkbox" id="separateTickets"><span>Cho phép vé tách chặng</span></label></div>
+          <div class="search-bottom"><p>ⓘ Giá cuối cùng cần được hãng/nhà cung cấp xác nhận trước khi thanh toán.</p><button type="submit" id="searchButton" class="search-btn"><span>⌕</span> TÌM CHUYẾN BAY</button></div>
+        </form>
+      </div>
+    </section>
+
+    <section class="results-section" id="results" hidden>
+      <div class="results-heading"><div><span class="eyebrow dark">SEARCH RESULTS</span><h2>Kết quả tìm kiếm</h2></div><span id="searchStatus" class="status-pill">Đang chuẩn bị</span></div>
+      <div id="resultMessage" class="result-message"></div>
+      <div id="offers" class="offers"></div>
+    </section>
+
+    <section class="provider-section" id="providers">
+      <div class="section-heading"><div><span class="eyebrow dark">CONNECTED SOURCES</span><h2>Nhiều nguồn, một điểm đến.</h2></div><p class="provider-intro">Kiến trúc mở để kết nối các nhà cung cấp khi có API và quyền truy cập hợp lệ.</p></div>
+      <div class="provider-grid" id="providerGrid"><div class="provider-card skeleton"></div><div class="provider-card skeleton"></div><div class="provider-card skeleton"></div></div>
+      <p class="provider-footnote">Chưa kết nối không đồng nghĩa có giá. Website chỉ hiển thị giá khi nhận được dữ liệu thực từ nguồn hợp lệ.</p>
+    </section>
+
+    <section class="trust-section" id="about">
+      <div><span class="eyebrow">BUILT FOR BETTER TRAVEL</span><h2>Không chỉ tìm vé.<br><em>Tìm hành trình phù hợp.</em></h2></div>
+      <div class="trust-grid"><article><b>01</b><h3>Giá minh bạch</h3><p>Phân biệt giá tham khảo, giá đang bán và giá đã xác nhận lại.</p></article><article><b>02</b><h3>Hành trình linh hoạt</h3><p>Hỗ trợ nhiều chặng, kết hợp hãng bay và tùy chọn sân bay thay thế.</p></article><article><b>03</b><h3>Gia đình dễ dàng</h3><p>Nhập riêng trẻ em, em bé ngồi lòng và em bé có ghế.</p></article></div>
+    </section>
+  </main>
+  <footer><a class="brand footer-brand" href="/"><span class="brand-mark">HA<span>✦</span></span><span class="brand-name">HOANG ANH <b>AIRLINES</b><small>SMART FLIGHT SEARCH</small></span></a><span>© 2026 Hoang Anh Airlines · Flight search platform</span><span>Giá vé tùy thuộc xác nhận của nhà cung cấp.</span></footer>
+  <script src="/app.js" defer></script>
+</body>
+</html>
